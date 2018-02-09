@@ -32,12 +32,14 @@
             <div class="row justify-content-center">
                 <div class="col-md-4">
                     <label for="tipo-documento">Nº do Documento</label>
-                    <input type="number" class="form-control" id="cod_doc" name="cod_doc" placeholder="Digite o codigo do documento" required />   
+                    <input type="number" class="form-control" id="cod_doc" name="cod_doc" placeholder="Digite o codigo do documento" required
+                    />
                 </div>
             </div>
             <div class="row btn-box justify-content-center">
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-secondary">Buscar</button>
+
                 </div>
             </div>
         </form>
@@ -45,61 +47,65 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Especie</th>
-                        <th>Nombre del coche</th>
-                        <th>Descripción</th>
+                        <th>Enlace</th>
                         <th>PDF</th>
-                        
                     </tr>
                 </thead>
                 <tbody id="load-list">
                 </tbody>
-                
+
             </table>
         </div>
     </div>
-    
-    
-    
-    
+
     <script src="./js/script.js"></script>
     <script src="./js/jquery-3.1.1.min.js"></script>
     <script src="./js/popper.js"></script>
     <script src="./js/bootstrap.min.js"></script>
-    
-    
+
+
     <script>
+
         $(document).ready(function () {
-            
-            $('#form-busca-doc').submit(function () {
-                var dadosFormulario = $(this).serialize();
-                
-                $.ajax({
-                    type: 'GET', // tipo requisicao
-                    url: 'http://localhost:8081/carros/rest/carros', // endereco ws
-                    dataType: 'json', // tipo de trafego de dados
-                    success: function (carros) {
-                        console.log(carros);
-                        var totalRegistros = carros.length;
-                        for(var i=0; totalRegistros>i; i++){
-                            var tr = '<tr>'+ 
-                                ' <td>'+carros[i].tipo+'</td>' +
-                                ' <td>'+carros[i].nome+'</td>' +
-                                ' <td>'+carros[i].desc+'</td>' +
-                                ' <td><a href="http://localhost:8081/carros/rest/carros/pdf" target="_blank">Abrir PDF</a></td>' +
-                                '</tr>';
-                                
-                                $('#load-list').append(tr);
-                            }
-                            console.log(totalRegistros);
-                        }
-                    });
-                    //$(this).reset();
-                    return false;
-                });
+            $.ajax({
+                type: 'GET', // tipo requisicao
+                url: 'http://10.200.5.111/api/tipos-documentos/external/5a679015a11288417556dad7', // endereco ws
+                dataType: 'json', // tipo de trafego de dados
+                success: function (res) {
+                    console.log(res);
+
+                    $('#tipo-documento').append($('<option>', {
+                        value: res._id,
+                        text: res.nome
+                    }));
+
+
+                    // $('#load-list').append(tr);
+
+                    /*  var total = res.length;
+                     for (var i = 0; total > i; i++) {
+                         var tr = '<tr>' +
+                             ' <td>' + res[i].tipo + '</td>' +
+                             ' <td>' + res[i].nome + '</td>' +
+ 
+                             $('#load-list').append(tr);
+                     } */
+                }
             });
-        </script>
-        
-    </body>
-    
-    </html> 
+
+            $('#form-busca-doc').submit((e) => {
+                var dadosFormulario = data;
+                console.log(dadosFormulario);
+                var url = 'http://10.200.5.111/api/documentos/external/image/5a679015a11288417556dad7/' + dadosFormulario.cod_doc;
+                console.log(url);
+
+                return false;
+            });
+        });
+
+
+    </script>
+
+</body>
+
+</html>
